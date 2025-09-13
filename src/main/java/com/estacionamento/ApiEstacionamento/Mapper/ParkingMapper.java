@@ -3,6 +3,7 @@ package com.estacionamento.ApiEstacionamento.Mapper;
 import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ParkingDto;
 import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ParkingRecordDto;
 import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ResponseParking;
+import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ResponseParkingExit;
 import com.estacionamento.ApiEstacionamento.Dto.VehicleDto.VehicleDto;
 import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingEntity;
 import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingRecord;
@@ -31,6 +32,7 @@ public class ParkingMapper {
         ParkingRecordDto parkingRecordDto = new ParkingRecordDto(
                 dtoVehicle,
                 parking.getCurrent().getCheckin(),
+                null,
                 parking.getCurrent().getPrice()
         );
 
@@ -75,6 +77,7 @@ public class ParkingMapper {
                         record.getVehicle().getType()
                 ),
                 record.getCheckin(),
+                null,
                 record.getPrice()
         );
 
@@ -83,6 +86,30 @@ public class ParkingMapper {
                 entity.getOccupied(),
                 parkingRecordDto
         );
+    }
+
+    public ResponseParkingExit toResponseExit(ParkingEntity entity){
+        ParkingEntity parking = parkingRepository.findByCode(entity.getCode());
+
+        VehicleDto vehicleDto = new VehicleDto(
+                parking.getCurrent().getVehicle().getPlate(),
+                parking.getCurrent().getVehicle().getType()
+        );
+        ParkingRecordDto current = new ParkingRecordDto(
+                vehicleDto,
+                parking.getCurrent().getCheckin(),
+                parking.getCurrent().getCheckout(),
+                parking.getCurrent().getPrice()
+
+        );
+
+        return new ResponseParkingExit(
+                entity.getCode(),
+                entity.getOccupied(),
+                current
+        );
+
+
     }
 
 

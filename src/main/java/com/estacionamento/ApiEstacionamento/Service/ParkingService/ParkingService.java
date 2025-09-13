@@ -69,8 +69,9 @@ public class ParkingService {
     public List<ParkingEntity> allParkings() {
         return parkingRepository.findAll();
     }
+
     @Transactional
-    public void saida(String code){
+    public ParkingEntity saida(String code){
 
         ParkingEntity parking = parkingRepository.findByCode(code);
 
@@ -91,7 +92,7 @@ public class ParkingService {
 
         parking.setOccupied(false);
 
-        parkingRepository.save(parking);
+       return parkingRepository.save(parking);
     }
 
     private String CodeParking(TypeEnum type){

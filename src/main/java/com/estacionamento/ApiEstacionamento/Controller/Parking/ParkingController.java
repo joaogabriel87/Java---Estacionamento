@@ -1,6 +1,8 @@
 package com.estacionamento.ApiEstacionamento.Controller.Parking;
 
+import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ParkingDto;
 import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ResponseParking;
+import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ResponseParkingExit;
 import com.estacionamento.ApiEstacionamento.Dto.VehicleDto.VehicleDto;
 import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingEntity;
 import com.estacionamento.ApiEstacionamento.Mapper.ParkingMapper;
@@ -39,5 +41,12 @@ public class ParkingController {
         List<ParkingEntity> parkings = parkingService.allParkings();
         List<ResponseParking> responseParkings = parkings.stream().map(parkingMapper::toResponse).toList();
         return ResponseEntity.status(HttpStatus.OK).body(responseParkings);
+    }
+
+    @PatchMapping("/{code}/checkout")
+    public ResponseEntity<ResponseParkingExit> exitParking(@PathVariable String code) {
+        ParkingEntity entity = parkingService.saida(code);
+        ResponseParkingExit response = parkingMapper.toResponseExit(entity); //
+        return ResponseEntity.ok(response);
     }
 }

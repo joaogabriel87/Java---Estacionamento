@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public record ParkingRecordDto(
 VehicleDto vehicle,
 LocalDateTime checkin,
+LocalDateTime checkout,
 Double price
 
 ) {
