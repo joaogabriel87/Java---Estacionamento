@@ -1,6 +1,7 @@
 package com.estacionamento.ApiEstacionamento.Controller.Parking;
 
 import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ParkingDto;
+import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ReportDto;
 import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ResponseParking;
 import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ResponseParkingExit;
 import com.estacionamento.ApiEstacionamento.Dto.VehicleDto.VehicleDto;
@@ -8,11 +9,13 @@ import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingEntity;
 import com.estacionamento.ApiEstacionamento.Mapper.ParkingMapper;
 import com.estacionamento.ApiEstacionamento.Service.ParkingService.ParkingService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,12 @@ public class ParkingController {
         List<ParkingEntity> parkings = parkingService.allParkings();
         List<ResponseParking> responseParkings = parkings.stream().map(parkingMapper::toResponse).toList();
         return ResponseEntity.status(HttpStatus.OK).body(responseParkings);
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<ReportDto> report(@RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data){
+        ReportDto report =  parkingService.report(data);
+        return ResponseEntity.status(HttpStatus.OK).body(report);
     }
 
     @PatchMapping("/{code}/checkout")

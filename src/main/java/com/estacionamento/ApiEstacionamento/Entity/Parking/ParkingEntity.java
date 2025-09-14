@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "Estacionamento")
 public class ParkingEntity {
     @Id
     @GeneratedValue

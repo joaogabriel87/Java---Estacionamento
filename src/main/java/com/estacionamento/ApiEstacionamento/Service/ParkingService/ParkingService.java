@@ -1,11 +1,14 @@
 package com.estacionamento.ApiEstacionamento.Service.ParkingService;
 
+import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ParkingRecordDto;
+import com.estacionamento.ApiEstacionamento.Dto.ParkingDto.ReportDto;
 import com.estacionamento.ApiEstacionamento.Dto.VehicleDto.VehicleDto;
 import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingEntity;
 import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingRecord;
 import com.estacionamento.ApiEstacionamento.Entity.Vehicle.TypeEnum;
 import com.estacionamento.ApiEstacionamento.Entity.Vehicle.VehicleEntity;
 import com.estacionamento.ApiEstacionamento.Mapper.ParkingMapper;
+import com.estacionamento.ApiEstacionamento.Repository.ParkingRecordRepository;
 import com.estacionamento.ApiEstacionamento.Repository.ParkingRepository;
 import com.estacionamento.ApiEstacionamento.Repository.VehicleRepository;
 import com.estacionamento.ApiEstacionamento.Service.VehicleService.VehicleService;
@@ -14,7 +17,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,12 +32,14 @@ public class ParkingService {
     VehicleService vehicleService;
     ParkingMapper parkingMapper;
     VehicleRepository vehicleRepository;
+    ParkingRecordRepository  parkingRecordRepository;
 
-    public ParkingService(ParkingRepository parkingRepository,  VehicleService vehicleService,  ParkingMapper parkingMapper, VehicleRepository vehicleRepository) {
+    public ParkingService(ParkingRepository parkingRepository,  VehicleService vehicleService,  ParkingMapper parkingMapper, VehicleRepository vehicleRepository, ParkingRecordRepository parkingRecordRepository) {
         this.parkingRepository = parkingRepository;
         this.vehicleService = vehicleService;
         this.parkingMapper = parkingMapper;
         this.vehicleRepository = vehicleRepository;
+        this.parkingRecordRepository = parkingRecordRepository;
     }
 
     public ParkingEntity entrada(VehicleDto dto) {
@@ -95,6 +102,35 @@ public class ParkingService {
        return parkingRepository.save(parking);
     }
 
+    public ReportDto report(LocalDate date){
+        LocalDateTime start =date.atStartOfDay();
+        LocalDateTime end = date.atTime(LocalTime.MAX);
+
+        List<ParkingRecord> registros = parkingRecordRepository.findByCheckinBetween(start, end);
+
+        Double totalFaturado = registros.stream().mapToDouble(x -> x.getPrice() != null ? x.getPrice() : 0).sum();
+
+        Double tempoMedio = registros.stream().filter(x -> x.getCheckout()!=null).
+                mapToDouble(x -> Duration.between(x.getCheckin(), x.getCheckout()).toMinutes()).average().orElse(0.0);
+
+        List<ParkingRecordDto> dtos =  registros.stream().
+                map(x -> new ParkingRecordDto(
+                        new VehicleDto(x.getVehicle().getPlate(),
+                                x.getVehicle().getType()),
+                        x.getCheckin(),
+                        x.getCheckout(),
+                        x.getPrice()
+                )).toList();
+
+        return new ReportDto(
+                date,
+                registros.size(),
+                totalFaturado,
+                tempoMedio,
+                dtos
+        );
+    }
+
     private String CodeParking(TypeEnum type){
         String code = (type == TypeEnum.CAR ? "C" : "M") + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         return code;
@@ -112,7 +148,7 @@ public class ParkingService {
         }
 
 
-        long extraHours = Math.max(0, duration.toHours() - 1);
+        long extraHours = Math.max(0, duration.toHours());
 
         return basePrice + (extraHours * extraPrice);
     }

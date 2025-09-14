@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Table(name = "Veiculos")
 public class VehicleEntity {
 
     @Id
@@ -27,6 +28,7 @@ public class VehicleEntity {
     @Column(name = "modelo")
     private String model;
     @Column(name="tipo")
+    @Enumerated(EnumType.STRING)
     private TypeEnum type;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")

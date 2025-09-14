@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "Clientes")
 public class ClientsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

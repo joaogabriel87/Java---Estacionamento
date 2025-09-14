@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "Estacionamento_dados")
 public class ParkingRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
