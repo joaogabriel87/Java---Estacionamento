@@ -20,7 +20,6 @@ public VehicleService(VehicleRepository repository, VehicleMapper mapper) {
 }
 
  public VehicleEntity create(VehicleDto dto) {
-    System.out.println("Entrou aqui" + dto.toString());
         VehicleEntity entity = mapper.toEntity(dto);
         VehicleEntity newEntity = repository.save(entity);
         return newEntity;

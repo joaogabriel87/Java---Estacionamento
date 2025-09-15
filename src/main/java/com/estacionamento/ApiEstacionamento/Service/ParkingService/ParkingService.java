@@ -7,6 +7,9 @@ import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingEntity;
 import com.estacionamento.ApiEstacionamento.Entity.Parking.ParkingRecord;
 import com.estacionamento.ApiEstacionamento.Entity.Vehicle.TypeEnum;
 import com.estacionamento.ApiEstacionamento.Entity.Vehicle.VehicleEntity;
+import com.estacionamento.ApiEstacionamento.Erro.ParkingIsOccupiedTrue;
+import com.estacionamento.ApiEstacionamento.Erro.ParkingisNull;
+import com.estacionamento.ApiEstacionamento.Erro.VehicleIsOccupied;
 import com.estacionamento.ApiEstacionamento.Mapper.ParkingMapper;
 import com.estacionamento.ApiEstacionamento.Repository.ParkingRecordRepository;
 import com.estacionamento.ApiEstacionamento.Repository.ParkingRepository;
@@ -20,7 +23,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,15 +45,13 @@ public class ParkingService {
     }
 
     public ParkingEntity entrada(VehicleDto dto) {
-        if (dto == null) {
-            throw new IllegalArgumentException("Veículo inválido");
-        }
 
         boolean occupied = vehicleRepository
                 .isVehicleParkingOccupied(dto.placa())
-                .orElse(false); // default se não achar
+                .orElse(false);
+
         if (occupied){
-            throw  new IllegalArgumentException("Veiculo ja esta com estacionamento ativo");
+            throw  new VehicleIsOccupied();
         }
         VehicleEntity vehicle = vehicleService.create(dto);
 
@@ -83,11 +83,11 @@ public class ParkingService {
         ParkingEntity parking = parkingRepository.findByCode(code);
 
         if (parking == null) {
-            throw new EntityNotFoundException("Estacionamento não encontrado para o código: " + code);
+            throw new ParkingisNull("O Estacionamento: " + code + " Não existe" );
         }
 
         if (!parking.getOccupied()) {
-            throw new IllegalStateException("Estacionamento já está finalizado para o código: " + code);
+            throw new ParkingIsOccupiedTrue("Estacionamento já está finalizado para o código: " + code);
         }
 
         ParkingRecord current = parking.getCurrent();
