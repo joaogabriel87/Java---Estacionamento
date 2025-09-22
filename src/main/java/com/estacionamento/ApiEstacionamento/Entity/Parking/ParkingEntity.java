@@ -3,6 +3,7 @@ package com.estacionamento.ApiEstacionamento.Entity.Parking;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class ParkingEntity {
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParkingRecord> records = new ArrayList<>();
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     private ParkingRecord current;
 
     public ParkingEntity( String code, Boolean occupied,  ParkingRecord current) {

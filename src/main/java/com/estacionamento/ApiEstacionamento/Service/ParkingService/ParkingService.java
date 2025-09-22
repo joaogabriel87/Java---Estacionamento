@@ -35,13 +35,17 @@ public class ParkingService {
     ParkingMapper parkingMapper;
     VehicleRepository vehicleRepository;
     ParkingRecordRepository  parkingRecordRepository;
+    codeService codeService;
+    priceService priceService;
 
-    public ParkingService(ParkingRepository parkingRepository,  VehicleService vehicleService,  ParkingMapper parkingMapper, VehicleRepository vehicleRepository, ParkingRecordRepository parkingRecordRepository) {
+    public ParkingService(ParkingRepository parkingRepository,  VehicleService vehicleService,  ParkingMapper parkingMapper, VehicleRepository vehicleRepository, ParkingRecordRepository parkingRecordRepository,  codeService codeService,  priceService priceService) {
         this.parkingRepository = parkingRepository;
         this.vehicleService = vehicleService;
         this.parkingMapper = parkingMapper;
         this.vehicleRepository = vehicleRepository;
         this.parkingRecordRepository = parkingRecordRepository;
+        this.codeService = codeService;
+        this.priceService = priceService;
     }
 
     public ParkingEntity entrada(VehicleDto dto) {
@@ -62,7 +66,7 @@ public class ParkingService {
         record.setPrice(0.0);
 
         ParkingEntity parking = new ParkingEntity();
-        parking.setCode(CodeParking(dto.tipo()));
+        parking.setCode(codeService.CodeParking(dto.tipo()));
         parking.setOccupied(true);
         parking.setCurrent(record);
         parking.getRecords().add(record);
@@ -92,7 +96,7 @@ public class ParkingService {
 
         ParkingRecord current = parking.getCurrent();
         current.setCheckout(LocalDateTime.now());
-        current.setPrice(priceCheckout(
+        current.setPrice(priceService.priceCheckout(
                 current.getVehicle().getType(),
                 current.getCheckin()
         ));
@@ -131,26 +135,8 @@ public class ParkingService {
         );
     }
 
-    private String CodeParking(TypeEnum type){
-        String code = (type == TypeEnum.CAR ? "C" : "M") + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-        return code;
-    }
-
-    private Double priceCheckout(TypeEnum type, LocalDateTime checkin) {
-        double basePrice = (type == TypeEnum.CAR) ? 15.0 : 8.0;
-        double extraPrice = (type == TypeEnum.CAR) ? 5.0 : 2.0;
-
-        Duration duration = Duration.between(checkin, LocalDateTime.now());
 
 
-        if (duration.toMinutes() <= 15) {
-            return 0.0;
-        }
 
-
-        long extraHours = Math.max(0, duration.toHours());
-
-        return basePrice + (extraHours * extraPrice);
-    }
 
 }

@@ -19,7 +19,7 @@ public class ParkingRecord {
     @ManyToOne()
     @JoinColumn(name = "parking_id")
     private ParkingEntity spot;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id", nullable = false)
     private VehicleEntity vehicle;
     @Column(name = "horario_chegada")
