@@ -37,4 +37,15 @@ public class ParkingEntity {
     public ParkingEntity() {
 
     }
+
+    @Override
+    public String toString() {
+        return "ParkingEntity{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", occupied=" + occupied +
+                ", records=" + records +
+                ", current=" + current +
+                '}';
+    }
 }
