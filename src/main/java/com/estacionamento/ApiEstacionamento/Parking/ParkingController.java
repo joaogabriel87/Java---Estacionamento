@@ -1,0 +1,34 @@
+package com.estacionamento.ApiEstacionamento.Parking;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+
+@RestController
+@RequestMapping("/api/parking")
+@Validated
+@RequiredArgsConstructor
+public class ParkingController {
+
+    private final ParkingMapper parkingMapper;
+    private final ParkingService parkingService;
+
+    @PostMapping
+    public ResponseEntity<ResponseParking>createParking(@Valid @RequestBody ParkingDto dto){
+        ParkingEntity parkingEntity = parkingService.createParking(dto);
+        ResponseParking response =  parkingMapper.toResponseParking(parkingEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("report/{local}/{date}")
+    public ResponseEntity<ReportDto>getReport(@PathVariable String local ,@PathVariable LocalDateTime date){
+        ReportDto report = parkingService.report(local,date);
+        return  ResponseEntity.status(HttpStatus.OK).body(report);
+    }
+
+}
