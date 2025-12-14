@@ -12,7 +12,13 @@ public record ParkingDto(
     String name,
     @NotNull
     @Positive
+    int capacityTotalCar,
+    @NotNull
+    @Positive
     int capacityCar,
+    @NotNull
+    @Positive
+    int capacityTotalMoto,
     @NotNull
     @Positive
     int capacityMoto,

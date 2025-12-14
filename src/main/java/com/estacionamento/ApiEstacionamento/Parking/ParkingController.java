@@ -31,4 +31,10 @@ public class ParkingController {
         return  ResponseEntity.status(HttpStatus.OK).body(report);
     }
 
+    @GetMapping("vagas/{local}")
+    public ResponseEntity<ResponseParkingVaga> getVagas(@PathVariable String local){
+        ResponseParkingVaga response =  parkingService.getVaga(local);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 }

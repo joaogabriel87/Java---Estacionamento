@@ -27,10 +27,19 @@ public class TicketMapper {
         return ticketEntity;
     }
 
-    public ResponseTicket toResponse(TicketEntity ticketEntity) {
-        return new ResponseTicket(
+    public ResponseEnterTicket toResponse(TicketEntity ticketEntity) {
+        return new ResponseEnterTicket(
                 ticketEntity.getCodeTicket(),
                 ticketEntity.getCheckin()
+        );
+    }
+
+    public ResponseExitTicket toResponseExit(TicketEntity ticketEntity) {
+        return new ResponseExitTicket(
+                ticketEntity.getCodeTicket(),
+                ticketEntity.getCheckin(),
+                ticketEntity.getCheckout(),
+                ticketEntity.getPrice()
         );
     }
 

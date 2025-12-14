@@ -25,6 +25,10 @@ public class ParkingEntity {
     private int capacityCar;
     @Column(name = "capacidade_moto")
     private int capacityMoto;
+    @Column(name = "capacidade_maxima_carro")
+    private int capacityMaxCar;
+    @Column(name = "capacidade_maxima_moto")
+    private int capacityMaxMoto;
     @Column(name = "taxa_carro", nullable = false, precision = 10, scale = 2)
     private BigDecimal taxaCarro;
     @Column(name = "taxa_moto", nullable = false, precision = 10, scale = 2)
@@ -38,8 +42,8 @@ public class ParkingEntity {
     private List<TicketEntity> tickets;
 
 
-
-    public ParkingEntity( String name, int capacityCar, int capacityMoto, BigDecimal taxaCarro, BigDecimal taxaMoto, BigDecimal taxaCarroAd, BigDecimal taxaMotoAd  ) {
+    public ParkingEntity (){}
+    public ParkingEntity(String name, int capacityCar, int capacityMoto, BigDecimal taxaCarro, BigDecimal taxaMoto, BigDecimal taxaCarroAd, BigDecimal taxaMotoAd, int capacityMaxCar, int capacityMaxMoto  ) {
         this.name = name;
         this.capacityCar = capacityCar;
         this.capacityMoto = capacityMoto;
@@ -47,7 +51,8 @@ public class ParkingEntity {
         this.taxaMoto = taxaMoto;
         this.taxaCarroAd = taxaCarroAd;
         this.taxaMotoAd = taxaMotoAd;
-
+        this.capacityMaxCar = capacityMaxCar;
+        this.capacityMaxMoto = capacityMaxMoto;
     }
 
 

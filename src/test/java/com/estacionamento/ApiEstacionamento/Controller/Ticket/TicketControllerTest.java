@@ -2,7 +2,7 @@ package com.estacionamento.ApiEstacionamento.Controller.Ticket;
 
 import com.estacionamento.ApiEstacionamento.Parking.ParkingDto;
 import com.estacionamento.ApiEstacionamento.Parking.ResponseParking;
-import com.estacionamento.ApiEstacionamento.Ticket.ResponseTicket;
+import com.estacionamento.ApiEstacionamento.Ticket.ResponseEnterTicket;
 import com.estacionamento.ApiEstacionamento.Vehicle.VehicleDto;
 import com.estacionamento.ApiEstacionamento.Parking.ParkingEntity;
 import com.estacionamento.ApiEstacionamento.Ticket.TicketEntity;
@@ -95,10 +95,10 @@ class TicketControllerTest {
 
         String url = baseUrl + "/" + parkingName;
 
-        ResponseEntity<ResponseTicket> response = restTemplate.postForEntity(
+        ResponseEntity<ResponseEnterTicket> response = restTemplate.postForEntity(
                 url,
                 vehicleDto,
-                ResponseTicket.class
+                ResponseEnterTicket.class
         );
 
         System.out.println("Status: " + response.getStatusCode());

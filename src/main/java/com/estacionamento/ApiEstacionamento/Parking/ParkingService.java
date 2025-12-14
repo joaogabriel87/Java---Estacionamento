@@ -40,13 +40,13 @@ public class ParkingService {
             if (parking.getCapacityCar() <= 0) {
                 throw new IllegalStateException("Não há vagas disponíveis para carros");
             }
-            parking.setCapacityCar((short) (parking.getCapacityCar() - 1));
+            parking.setCapacityCar(parking.getCapacityCar() - 1);
 
         } else if (type == TypeEnum.MOTORCYCLE) {
             if (parking.getCapacityMoto() <= 0) {
                 throw new IllegalStateException("Não há vagas disponíveis para motos");
             }
-            parking.setCapacityMoto ((short) (parking.getId()- 1));
+            parking.setCapacityMoto (parking.getCapacityMoto() - 1);
         }
     }
 
@@ -55,28 +55,17 @@ public class ParkingService {
             throw new IllegalArgumentException("Tipo de veículo não pode ser nulo");
         }
         if (type == TypeEnum.CAR) {
-            parking.setCapacityCar((short) (parking.getCapacityCar() + 1));
+            if (parking.getCapacityCar() < parking.getCapacityMaxCar()){
+            parking.setCapacityCar(parking.getCapacityCar() + 1);
+            }
         }
         else if (type == TypeEnum.MOTORCYCLE) {
-            parking.setCapacityMoto((short) (parking.getCapacityMoto() + 1));
+            if (parking.getCapacityMoto() < parking.getCapacityMaxMoto()){
+            parking.setCapacityMoto(parking.getCapacityMoto() + 1);
+            }
         }
     }
 
-    public boolean hasSpotFree(ParkingEntity parking,TypeEnum type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Tipo de veículo não pode ser nulo");
-        }
-
-        if (type == TypeEnum.CAR) {
-            return parking.getCapacityMoto() > 0;
-        }else if (type == TypeEnum.MOTORCYCLE) {
-            return parking.getCapacityMoto() > 0;
-        }
-
-        return false;
-    }
-
-    @Transactional
     public ReportDto report(String local, LocalDateTime date ) {
         ParkingEntity parking = parkingRepository.findByName(local);
 
@@ -93,4 +82,9 @@ public class ParkingService {
                 tempoMedio
         );
     }
+
+        public ResponseParkingVaga getVaga(String local){
+            ParkingEntity parking = parkingRepository.findByName(local);
+            return parkingMapper.toResponseVagas(parking);
+        }
 }

@@ -15,24 +15,12 @@ public class ParkingMapper {
                 parkingDto.taxa_carro(),
                 parkingDto.taxa_moto(),
                 parkingDto.taxa_carro_ad(),
-                parkingDto.taxa_moto_ad()
+                parkingDto.taxa_moto_ad(),
+                parkingDto.capacityTotalCar(),
+                parkingDto.capacityTotalMoto()
         );
-
-
     }
 
-    public ParkingDto toParkingDto(ParkingEntity parkingEntity) {
-        return new ParkingDto(
-                parkingEntity.getName(),
-                parkingEntity.getCapacityCar(),
-                parkingEntity.getCapacityMoto(),
-                parkingEntity.getTaxaCarro(),
-                parkingEntity.getTaxaMoto(),
-                parkingEntity.getTaxaCarroAd(),
-                parkingEntity.getTaxaMotoAd()
-        );
-
-    }
 
     public ResponseParking toResponseParking(ParkingEntity entity) {
         return new ResponseParking(
@@ -41,8 +29,15 @@ public class ParkingMapper {
                 entity.getCapacityMoto()
         );
 
-
     }
+    public ResponseParkingVaga toResponseVagas(ParkingEntity entity){
+        return new ResponseParkingVaga(
+                entity.getCapacityMaxCar(),
+                entity.getCapacityMaxCar() - entity.getCapacityCar(),
+                entity.getCapacityMaxMoto(),
+                entity.getCapacityMaxMoto() - entity.getCapacityMoto()
+        );
+        }
 
 
 }
