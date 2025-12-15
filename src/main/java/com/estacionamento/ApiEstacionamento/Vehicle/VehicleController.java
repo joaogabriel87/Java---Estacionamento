@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/vehicle")
 @Validated
@@ -25,12 +27,11 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<ResponseVehicle>> getAll(){
-//        List<VehicleEntity> vehicles = vehicleService.all();
-//        List<ResponseVehicle> responseVehicles = vehicles.stream().map(vehicleMapper::toResponse).toList();
-//        return ResponseEntity.status(HttpStatus.OK).body(responseVehicles);
-//    }
+    @GetMapping("/{plate}")
+    public ResponseEntity<List<ResponseVehiclePlate>> getByPlate(@PathVariable("plate") String plate){
+        List<ResponseVehiclePlate> response =  vehicleService.getVehiclePlate(plate);
+        return ResponseEntity.ok().body(response);
+    }
 
 
 }

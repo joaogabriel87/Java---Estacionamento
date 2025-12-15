@@ -20,8 +20,12 @@ public VehicleService(VehicleRepository repository, VehicleMapper mapper) {
         return newEntity;
  }
 
- public List<VehicleEntity> all() {
-    return repository.findAll();
+ public List<ResponseVehiclePlate> getVehiclePlate(String plate) {
+    VehicleEntity entity = repository.findByPlate(plate);
+    if(entity == null){
+        return null;
+    }
+    return mapper.toResponseList(entity);
  }
 
 }

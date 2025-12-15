@@ -38,7 +38,7 @@ public class TicketEntity {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
-
+    public TicketEntity(){}
     public TicketEntity(Long codeTicket, VehicleEntity vehicle,  ParkingEntity parking, LocalDateTime checkin) {
         this.codeTicket = codeTicket;
         this.parking = parking;

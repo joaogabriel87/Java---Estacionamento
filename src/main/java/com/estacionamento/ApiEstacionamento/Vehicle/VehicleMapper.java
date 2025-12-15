@@ -1,6 +1,10 @@
 package com.estacionamento.ApiEstacionamento.Vehicle;
 
+import com.estacionamento.ApiEstacionamento.Ticket.TicketEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class VehicleMapper {
@@ -12,18 +16,17 @@ public class VehicleMapper {
         );
     }
 
-    public VehicleDto toDto(VehicleEntity entity){
-        return new VehicleDto(
-                entity.getPlate(),
-                entity.getType()
-        );
-    }
 
-    public ResponseVehicle toResponse(VehicleEntity entity){
-
-        return new ResponseVehicle(
-                entity.getPlate(),
-                entity.getType()
-        );
+    public List<ResponseVehiclePlate> toResponseList(VehicleEntity entity) {
+        return entity.getTickets().stream()
+                .map(ticket -> new ResponseVehiclePlate(
+                        ticket.getCodeTicket(),
+                        entity.getPlate(),
+                        ticket.getCheckin(),
+                        ticket.getCheckout(),
+                        ticket.getPrice(),
+                        ticket.getStatus()
+                ))
+                .collect(Collectors.toList());
     }
 }
