@@ -42,7 +42,6 @@ public class ParkingEntity {
     private List<TicketEntity> tickets;
 
 
-    public ParkingEntity (){}
     public ParkingEntity(String name, int capacityCar, int capacityMoto, BigDecimal taxaCarro, BigDecimal taxaMoto, BigDecimal taxaCarroAd, BigDecimal taxaMotoAd, int capacityMaxCar, int capacityMaxMoto  ) {
         this.name = name;
         this.capacityCar = capacityCar;
