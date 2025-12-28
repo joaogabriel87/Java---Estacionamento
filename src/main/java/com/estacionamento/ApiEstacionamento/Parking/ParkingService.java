@@ -2,12 +2,12 @@ package com.estacionamento.ApiEstacionamento.Parking;
 
 import com.estacionamento.ApiEstacionamento.Ticket.TicketEntity;
 import com.estacionamento.ApiEstacionamento.Vehicle.TypeEnum;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class ParkingService {
     private final ParkingMapper parkingMapper;
     private final ParkingRepository parkingRepository;
 
-    public ParkingEntity createParking(ParkingDto dto){
+    public ParkingEntity createParking(RequestCreateParking dto){
 
         ParkingEntity parking = parkingMapper.toParkingEntity(dto);
 
@@ -66,10 +66,10 @@ public class ParkingService {
         }
     }
 
-    public ReportDto report(String local, LocalDateTime date ) {
+    public ReportDto report(String local, LocalDate date ) {
         ParkingEntity parking = parkingRepository.findByName(local);
 
-        List<TicketEntity> tickets = parking.getTickets().stream().filter(x -> x.getCheckout() != null && x.getCheckout().toLocalDate().isEqual(date.toLocalDate())).toList();
+        List<TicketEntity> tickets = parking.getTickets().stream().filter(x -> x.getCheckout() != null && x.getCheckout().toLocalDate().isEqual(date)).toList();
 
         BigDecimal totalFaturado =  tickets.stream().map(TicketEntity::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
 

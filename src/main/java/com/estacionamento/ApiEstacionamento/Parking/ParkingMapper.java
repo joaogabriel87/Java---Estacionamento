@@ -7,17 +7,15 @@ public class ParkingMapper {
 
     ParkingRepository parkingRepository;
 
-    public ParkingEntity toParkingEntity(ParkingDto parkingDto) {
+    public ParkingEntity toParkingEntity(RequestCreateParking requestCreateParking) {
         return new ParkingEntity(
-                parkingDto.name(),
-                parkingDto.capacityCar(),
-                parkingDto.capacityMoto(),
-                parkingDto.taxa_carro(),
-                parkingDto.taxa_moto(),
-                parkingDto.taxa_carro_ad(),
-                parkingDto.taxa_moto_ad(),
-                parkingDto.capacityTotalCar(),
-                parkingDto.capacityTotalMoto()
+                requestCreateParking.name(),
+                requestCreateParking.taxa_carro(),
+                requestCreateParking.taxa_moto(),
+                requestCreateParking.taxa_carro_ad(),
+                requestCreateParking.taxa_moto_ad(),
+                requestCreateParking.capacityTotalCar(),
+                requestCreateParking.capacityTotalMoto()
         );
     }
 

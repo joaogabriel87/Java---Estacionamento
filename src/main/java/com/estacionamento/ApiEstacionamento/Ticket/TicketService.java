@@ -15,6 +15,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Service
 public class TicketService {
@@ -44,7 +46,7 @@ public class TicketService {
         }
 
         ParkingEntity parking = parkingRepository.findByName(nomeLocal);
-        parkingService.removeCapacity(parking, vehicle.getType());
+        parkingService.AddCapacity(parking, vehicle.getType());
 
 
         TicketEntity ticket = ticketMapper.toEntity(vehicle, parking);
@@ -67,9 +69,10 @@ public class TicketService {
 
         ticket.setPrice(priceService.priceCheckout(ticket.getVehicle().getType(), ticket.getCheckin(), parking));
 
-        parkingService.AddCapacity(parking, ticket.getVehicle().getType());
+        parkingService.removeCapacity(parking, ticket.getVehicle().getType());
 
         ticket.setStatus(StatusEnum.FINALIZADO);
+        ticket.setCheckout(LocalDateTime.now());
 
         return ticketRepository.save(ticket);
 

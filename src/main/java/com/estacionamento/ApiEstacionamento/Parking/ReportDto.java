@@ -1,10 +1,11 @@
 package com.estacionamento.ApiEstacionamento.Parking;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record ReportDto(
-        LocalDateTime date,
+        LocalDate date,
         Integer totalRegister,
         BigDecimal totalFaturado,
         Double tempoMedioMinutes

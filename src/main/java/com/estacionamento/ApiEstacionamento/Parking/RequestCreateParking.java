@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-public record ParkingDto(
+public record RequestCreateParking(
 
     @NotBlank
     String name,
@@ -15,13 +15,7 @@ public record ParkingDto(
     int capacityTotalCar,
     @NotNull
     @Positive
-    int capacityCar,
-    @NotNull
-    @Positive
     int capacityTotalMoto,
-    @NotNull
-    @Positive
-    int capacityMoto,
     @NotNull
     @Positive
     BigDecimal taxa_carro,

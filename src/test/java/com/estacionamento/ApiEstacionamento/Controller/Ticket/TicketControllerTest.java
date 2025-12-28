@@ -1,6 +1,6 @@
 package com.estacionamento.ApiEstacionamento.Controller.Ticket;
 
-import com.estacionamento.ApiEstacionamento.Parking.ParkingDto;
+import com.estacionamento.ApiEstacionamento.Parking.RequestCreateParking;
 import com.estacionamento.ApiEstacionamento.Parking.ResponseParking;
 import com.estacionamento.ApiEstacionamento.Ticket.ResponseEnterTicket;
 import com.estacionamento.ApiEstacionamento.Vehicle.VehicleDto;
@@ -66,7 +66,7 @@ class TicketControllerTest {
     @Transactional
     void shouldCreateTicketWhenVehicleEntersParking() {
 
-        ParkingDto parkingDto = new ParkingDto(
+        RequestCreateParking requestCreateParking = new RequestCreateParking(
                 "BLOCO3",
                 54,
                 86,
@@ -80,7 +80,7 @@ class TicketControllerTest {
         String parkingUrl = "http://localhost:" + port + "/api/parking";
         ResponseEntity<ResponseParking> parkingResponse = restTemplate.postForEntity(
                 parkingUrl,
-                parkingDto,
+                requestCreateParking,
                 ResponseParking.class
         );
 
@@ -116,7 +116,7 @@ class TicketControllerTest {
         assertThat(savedTicket.getVehicle().getPlate()).isEqualTo("1234567");
 
 
-        ParkingEntity updatedParking = parkingRepository.findByName(parkingDto.name());
+        ParkingEntity updatedParking = parkingRepository.findByName(requestCreateParking.name());
         assertThat(updatedParking.getTickets()).hasSize(1);
         assertThat(updatedParking.getCapacityCar()).isEqualTo(53);
     }

@@ -17,14 +17,14 @@ public class TicketController {
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
 
-    @PostMapping("/{localParking}")
+    @PostMapping("/enter/{localParking}")
     public ResponseEntity<ResponseEnterTicket>entrada(@PathVariable String localParking, @Valid @RequestBody VehicleDto dto){
         TicketEntity ticket = ticketService.entrada(dto, localParking);
         ResponseEnterTicket response = ticketMapper.toResponse(ticket);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-    @PostMapping("/{codeTicket}")
-    public ResponseExitTicket saida(@PathVariable Long codeTicket, @Valid @RequestBody String localParking){
+    @PostMapping("/exit/{codeTicket}/{localParking}")
+    public ResponseExitTicket saida(@PathVariable Long codeTicket, @PathVariable String localParking){
         TicketEntity ticket = ticketService.saida(localParking, codeTicket);
         ResponseExitTicket response = ticketMapper.toResponseExit(ticket);
         return ResponseEntity.status(HttpStatus.OK).body(response).getBody();

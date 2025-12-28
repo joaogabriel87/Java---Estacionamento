@@ -1,6 +1,6 @@
 package com.estacionamento.ApiEstacionamento.Controller.Parking;
 
-import com.estacionamento.ApiEstacionamento.Parking.ParkingDto;
+import com.estacionamento.ApiEstacionamento.Parking.RequestCreateParking;
 import com.estacionamento.ApiEstacionamento.Parking.ResponseParking;
 import com.estacionamento.ApiEstacionamento.Parking.ParkingEntity;
 import com.estacionamento.ApiEstacionamento.Parking.ParkingRepository;
@@ -45,7 +45,7 @@ class ParkingControllerTest {
     @Order(1)
     void enterParking() {
 
-        ParkingDto dto = new ParkingDto(
+        RequestCreateParking dto = new RequestCreateParking(
                 "BLOCO12",
                 54,
                 86,
