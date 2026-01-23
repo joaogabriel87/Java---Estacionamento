@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -31,6 +33,14 @@ public class VehicleController {
     public ResponseEntity<List<ResponseVehiclePlate>> getByPlate(@PathVariable("plate") String plate){
         List<ResponseVehiclePlate> response =  vehicleService.getVehiclePlate(plate);
         return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/link/vehicle")
+    public ResponseEntity<VehicleEntity> linkVehicle(@Valid @RequestBody RequestLinkVehicle dto)
+            throws URISyntaxException, IOException, InterruptedException {
+
+        VehicleEntity vehicle = vehicleService.linkVehicle(dto);
+        return ResponseEntity.ok(vehicle);
     }
 
 

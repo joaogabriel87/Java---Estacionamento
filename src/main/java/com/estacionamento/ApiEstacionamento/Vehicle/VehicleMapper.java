@@ -29,4 +29,15 @@ public class VehicleMapper {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public VehicleEntity requestLinkVehicle(RequestLinkVehicle dto){
+         VehicleEntity vehicle = new VehicleEntity(
+                dto.plate(),
+                dto.type()
+        );
+         vehicle.setBrand(dto.brand());
+         vehicle.setModel(dto.model());
+         vehicle.setPlate(dto.plate());
+         return vehicle;
+    }
 }
