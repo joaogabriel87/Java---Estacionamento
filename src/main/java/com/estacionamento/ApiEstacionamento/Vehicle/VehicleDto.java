@@ -6,7 +6,8 @@ import jakarta.validation.constraints.Pattern;
 
 public record VehicleDto(
         @NotBlank
-        @Pattern(regexp = "\\d{7}", message = "Informe uma placa valida")
+        @Pattern(regexp = "^[A-Za-z0-9]{7}$"
+        , message = "Informe uma placa valida")
         String placa,
         @NotNull(message = "Tipo obrigatorio")
         TypeEnum tipo
